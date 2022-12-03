@@ -1,4 +1,5 @@
 import ExpenseItem from "./ExpenseItem";
+// import './ExpenseList.css'
 
 function ExpenseList(props) {
     const expenses = props.expenses
