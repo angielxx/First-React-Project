@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import ExpenseList from "./components/Expenses/ExpenseList";
 import ExpenseFilter from "./components/Expenses/ExpenseFilter";
 import './components/Expenses/ExpenseList.css';
@@ -32,8 +34,12 @@ function App() {
     console.log(expense)
   }
 
+  // state는 그 값을 사용할 컴포넌트에서 정의
+  const [newFilter, setNewFilter] = useState('2022');
+
   const changeFilterHandler = (newFilter) => {
     console.log('here', newFilter)
+    setNewFilter(newFilter);
   }
 
   return (
@@ -42,7 +48,7 @@ function App() {
       <NewExpense onAddExpense={addExpenseHandler}/>
       <Card className="expenses">
         <div>
-          <ExpenseFilter onChangeFilter={changeFilterHandler} />
+          <ExpenseFilter selected={newFilter} onChangeFilter={changeFilterHandler} />
         </div>
         <ExpenseList expenses={expenses}/>
       </Card>
