@@ -1,5 +1,7 @@
 import ExpenseList from "./components/Expenses/ExpenseList";
+import ExpenseFilter from "./components/Expenses/ExpenseFilter";
 import './components/Expenses/ExpenseList.css';
+import './components/Expenses/ExpenseFilter.css';
 import Card from './components/UI/Card';
 import NewExpense from "./components/NewExpense/NewExpense";
 
@@ -30,11 +32,18 @@ function App() {
     console.log(expense)
   }
 
+  const changeFilterHandler = (newFilter) => {
+    console.log('here', newFilter)
+  }
+
   return (
     <div>
       {/* 하위 컴포넌트에 props를 통해 함수에 대한 포인터를 전달 */}
       <NewExpense onAddExpense={addExpenseHandler}/>
       <Card className="expenses">
+        <div>
+          <ExpenseFilter onChangeFilter={changeFilterHandler} />
+        </div>
         <ExpenseList expenses={expenses}/>
       </Card>
     </div>
