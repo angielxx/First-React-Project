@@ -1,6 +1,7 @@
-import ExpenseList from "./components/ExpenseList";
-import './components/ExpenseList.css';
-import Card from './components/Card';
+import ExpenseList from "./components/Expenses/ExpenseList";
+import './components/Expenses/ExpenseList.css';
+import Card from './components/UI/Card';
+import NewExpense from "./components/NewExpense/NewExpense";
 
 function App() {
   const expenses = [
@@ -25,9 +26,14 @@ function App() {
     },
   ];
 
+  const addExpenseHandler = (expense) => {
+    console.log(expense)
+  }
+
   return (
     <div>
-      <h2>Let's get started!</h2>
+      {/* 하위 컴포넌트에 props를 통해 함수에 대한 포인터를 전달 */}
+      <NewExpense onAddExpense={addExpenseHandler}/>
       <Card className="expenses">
         <ExpenseList expenses={expenses}/>
       </Card>
