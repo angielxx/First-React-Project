@@ -3,17 +3,16 @@ import ExpenseItem from "./ExpenseItem";
 
 function ExpenseList(props) {
     const expenses = props.expenses
-    let list = []
-    for (let expense of expenses) {
-        list.push(
-            <ExpenseItem
-                title={expense.title}
-                amount={expense.amount}
-                date={expense.date}
-            />
-        )
-    }
-    return list
+    const filtered_expenses = expenses.filter(expense => {
+        return expense.date.getFullYear() == props.filter;
+    })
+    return (filtered_expenses.map(expense => 
+        <ExpenseItem
+            key={expense.id}
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+        />))
 }
 
 export default ExpenseList;
