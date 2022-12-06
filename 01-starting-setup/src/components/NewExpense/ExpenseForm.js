@@ -7,6 +7,9 @@ const ExpenseForm = (props) => {
     const [newAmount, setNewAmount] = useState('');
     const [newDate, setNewDate] = useState('');
 
+    // form 보이기 여부
+    const [isEditing, setIsEditing] = useState(false);
+
     const titleChangeHandler = (event) => {
         setNewTitle(event.target.value);
     };
@@ -21,7 +24,8 @@ const ExpenseForm = (props) => {
         event.preventDefault();
         const expenseData = {
             title: newTitle,
-            amount: newAmount,
+            // 문자열을 숫자로 변환
+            amount: +newAmount,
             date: new Date(newDate),
         }
         // props로 전달받은 상위 컴포넌트의 함수를 실행
@@ -33,42 +37,49 @@ const ExpenseForm = (props) => {
         setNewAmount('');
         setNewDate('');
 
-        setContent(<button onClick={onButtonClickHandler}>Add New Expense</button>)
+        setIsEditing(false);
     };
 
-    const [content, setContent] = useState(<button onClick={onButtonClickHandler}>Add New Expense</button>)
 
-    function onButtonClickHandler() {
-        setContent((
-            <form onSubmit={submitHandler}>
-                <div className="new-expense__controls">
-                    <div className="new-expense__control">
-                        <label htmlFor="">Title</label>
-                        <input
-                            type="text"
-                            value={newTitle}
-                            onChange={titleChangeHandler} 
-                        />
-                    </div>
-                    <div className="new-expense__control">
-                        <label htmlFor="">Amount</label>
-                        <input type="number" min="0.01" step="0.01" value={newAmount} onChange={amountChangeHandler}/>
-                    </div>
-                    <div className="new-expense__control">
-                        <label htmlFor="">Date</label>
-                        <input type="date" min="2019-01-01" max="2022-12-31" value={newDate} onChange={dateChangeHandler}/>
-                    </div>
-                </div>
-                <div className="new-expense__actions">
-                    <button type="submit" >Add Expense</button>
-                </div>
-            </form>
-        ))
+
+    const startEditingHandler = () => {
+        setIsEditing(true);
     }
+    const endEditingHandler = () => {
+        setIsEditing(false);
+    }
+
+    const formContent = (
+        <form onSubmit={submitHandler}>
+            <div className="new-expense__controls">
+                <div className="new-expense__control">
+                    <label htmlFor="">Title</label>
+                    <input
+                        type="text"
+                        value={newTitle}
+                        onChange={titleChangeHandler} 
+                    />
+                </div>
+                <div className="new-expense__control">
+                    <label htmlFor="">Amount</label>
+                    <input type="number" min="0.01" step="0.01" value={newAmount} onChange={amountChangeHandler}/>
+                </div>
+                <div className="new-expense__control">
+                    <label htmlFor="">Date</label>
+                    <input type="date" min="2019-01-01" max="2022-12-31" value={newDate} onChange={dateChangeHandler}/>
+                </div>
+            </div>
+            <div className="new-expense__actions">
+                <button type="button" onClick={endEditingHandler}>Cancel</button>
+                <button type="submit" >Add Expense</button>
+            </div>
+        </form>
+    )
 
     return (
         <div>
-            {content}
+            {!isEditing && <button onClick={startEditingHandler}>Add New Expense</button>}
+            {isEditing && formContent}
         </div>
     )
 };

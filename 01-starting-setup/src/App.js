@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import ExpenseList from "./components/Expenses/ExpenseList";
+import Expenses from "./components/Expenses/Expenses";
 import ExpenseFilter from "./components/Expenses/ExpenseFilter";
-import './components/Expenses/ExpenseList.css';
+import './components/Expenses/Expenses.css';
 import './components/Expenses/ExpenseFilter.css';
 import Card from './components/UI/Card';
 import NewExpense from "./components/NewExpense/NewExpense";
@@ -54,7 +54,7 @@ function App() {
         <div>
           <ExpenseFilter selected={newFilter} onChangeFilter={changeFilterHandler} />
         </div>
-        <ExpenseList expenses={expenses} filter={newFilter}/>
+        <Expenses expenses={expenses} filter={newFilter}/>
       </Card>
     </div>
   );
