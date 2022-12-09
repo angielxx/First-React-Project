@@ -1,0 +1,14 @@
+.userForm {
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.userForm label {
+  margin-bottom: 4px;
+}
+.userForm input {
+  width: 100%;
+  margin-bottom: 8px;
+}
