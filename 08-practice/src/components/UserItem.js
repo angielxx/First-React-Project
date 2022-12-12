@@ -1,12 +1,13 @@
 // components
 
 // styles
+import styles from './UserItem.module.css'
 
 const UserItem = (props) => {
   return (
-    <div>
-      <p>{[props.userName]}</p>
-      <p>{props.age} years old</p>
+    <div className={styles.userItem}>
+      <span>{props.username}</span>
+      <span>({props.age} years old)</span>
     </div>
   )
 }
