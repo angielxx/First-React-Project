@@ -1,63 +1,43 @@
-import { useState } from 'react';
+import useInput from '../hooks/use-input';
 
 const SimpleInput = (props) => {
-  // Name Input
-  const [enteredName, setEnteredName] = useState('');
-  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
-  // 형식이 맞는지
-  const enteredNameIsValid = enteredName.trim() !== '';
-  // 입력이 맞는지
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+  const {
+    value: enteredName,
+    isValid: enteredNameIsValid,
+    hasError: nameInputHasError,
+    valueChangeHandler: nameChangeHandler,
+    inputBlurHandler: nameBlurHandler,
+    reset: resetNameInput,
+  } = useInput((value) => value.trim() !== '');
 
-  // Email Input
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-  // 비어있는지 확인
-  const emailInputIsEmpty = enteredEmail.trim() === '';
-  let emailInputIsValid = Array.from(enteredEmail.trim()).includes('@');
-  const emailInputIsInvalid =
-    (emailInputIsEmpty || !emailInputIsValid) && enteredEmailTouched;
+  const {
+    value: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => value.includes('@'));
 
-  let formIsValid = enteredNameIsValid && emailInputIsInvalid ? true : false;
-
-  // Name Input Handler
-  const nameInputChangeHandler = (event) => {
-    setEnteredName(event.target.value);
-  };
-
-  const nameInputBlurHandler = (event) => {
-    setEnteredNameTouched(true);
-  };
-  // Email Input Handler
-  const emailInputChangeHandler = (event) => {
-    emailInputIsValid = Array.from(enteredEmail.trim()).includes('@');
-    setEnteredEmail(event.target.value);
-  };
-
-  const emailInputBlurHandler = (event) => {
-    const emailInputIsEmpty = enteredEmail.trim() === '';
-    setEnteredEmailTouched(true);
-  };
+  let formIsValid = enteredNameIsValid && enteredEmailIsValid ? true : false;
 
   // Form Submit Handler
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    setEnteredNameTouched(true);
+
     // 기본 유효성 검사 : 빈칸일때
-    if (enteredName.trim() === '') {
-      // setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setEnteredName('');
-    // touched 값을 초기화하여 nameInputIsValid값도 false로 되면 폼을 제출했을 때 에러메세지가 뜨지 않는다
-    setEnteredNameTouched(false);
+    resetNameInput();
+    resetEmailInput();
   };
 
-  const nameInputClasses = nameInputIsInvalid
+  const nameInputClasses = nameInputHasError
     ? 'form-control invalid'
     : 'form-control';
-  const emailInputClasses = emailInputIsInvalid
+  const emailInputClasses = emailInputHasError
     ? 'form-control invalid'
     : 'form-control';
 
@@ -68,11 +48,11 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="name"
-          onChange={nameInputChangeHandler}
-          onBlur={nameInputBlurHandler}
+          onChange={nameChangeHandler}
+          onBlur={nameBlurHandler}
           value={enteredName}
         />
-        {nameInputIsInvalid && (
+        {nameInputHasError && (
           <p className="error-text">Name must not be empty.</p>
         )}
       </div>
@@ -81,15 +61,12 @@ const SimpleInput = (props) => {
         <input
           type="email"
           id="name"
-          onChange={emailInputChangeHandler}
-          onBlur={emailInputBlurHandler}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
           value={enteredEmail}
         />
-        {emailInputIsEmpty && enteredEmailTouched && (
-          <p className="error-text">Email must not be empty.</p>
-        )}
-        {!emailInputIsEmpty && !emailInputIsValid && enteredEmailTouched && (
-          <p className="error-text">Email must contain '@'.</p>
+        {emailInputHasError && (
+          <p className="error-text">Please enter a valid email.</p>
         )}
       </div>
       <div className="form-actions">
