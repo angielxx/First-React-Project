@@ -1,3 +1,5 @@
+import { useSelector, connect } from 'react-redux';
+
 import classes from './Counter.module.css';
 
 const Counter = () => {
